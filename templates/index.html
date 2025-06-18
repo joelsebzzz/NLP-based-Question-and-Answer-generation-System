@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q&A Generator</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
+        .container { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1, h2 { color: #333; }
+        label { display: block; margin-top: 10px; font-weight: bold; }
+        textarea, input[type="file"] { width: 98%; padding: 10px; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px; }
+        input[type="radio"] { margin-right: 5px; }
+        .radio-group label { font-weight: normal; display: inline; margin-right: 15px;}
+        button { background-color: #007bff; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-top: 20px;}
+        button:hover { background-color: #0056b3; }
+        .result { margin-top: 20px; padding: 15px; border: 1px solid #eee; border-radius: 4px; background-color: #f9f9f9; }
+        .error { color: red; font-weight: bold; margin-top: 10px; }
+        .word-count-info { font-size: 0.9em; color: #666; margin-top: 5px;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Q&A Generator</h1>
+        <p>Enter a passage (max 300 words) or upload a .txt/.pdf file.</p>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data">
+            <div>
+                <label for="passage">Enter Passage:</label>
+                <textarea name="passage_text" id="passage" rows="8" placeholder="Paste your text here...">{{ passage_input }}</textarea>
+                 <p class="word-count-info">Current word count: <span id="word_count">0</span>/300</p>
+            </div>
+            <div>
+                <label for="file">Or Upload File (.txt, .pdf):</label>
+                <input type="file" name="file" id="file">
+            </div>
+            <div>
+                <label>Select Answer Type:</label>
+                <div class="radio-group">
+                    <input type="radio" id="short_answer" name="answer_type" value="short" {% if answer_type_input == 'short' %}checked{% endif %} required>
+                    <label for="short_answer">Short Answer</label>
+                    <input type="radio" id="long_answer" name="answer_type" value="long" {% if answer_type_input == 'long' %}checked{% endif %}>
+                    <label for="long_answer">Long Answer</label>
+                </div>
+            </div>
+            <button type="submit">Generate Q&A</button>
+        </form>
+
+        {% if question and answer %}
+        <div class="result">
+            <h2>Generated Q&A:</h2>
+            <p><strong>Question:</strong> {{ question }}</p>
+            <p><strong>Answer:</strong> {{ answer }}</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        const passageTextarea = document.getElementById('passage');
+        const wordCountSpan = document.getElementById('word_count');
+        const wordLimit = 300;
+
+        passageTextarea.addEventListener('input', () => {
+            const text = passageTextarea.value.trim();
+            const words = text === '' ? 0 : text.split(/\s+/).length;
+            wordCountSpan.textContent = words;
+            if (words > wordLimit) {
+                wordCountSpan.style.color = 'red';
+            } else {
+                wordCountSpan.style.color = '#666';
+            }
+        });
+        // Initialize word count on page load if there's existing text
+        if (passageTextarea.value) {
+             const initialText = passageTextarea.value.trim();
+             const initialWords = initialText === '' ? 0 : initialText.split(/\s+/).length;
+             wordCountSpan.textContent = initialWords;
+        }
+    </script>
+</body>
+</html>

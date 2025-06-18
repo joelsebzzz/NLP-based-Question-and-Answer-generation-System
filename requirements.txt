@@ -1,0 +1,15 @@
+evaluate
+datasets
+nltk
+transformers
+torch
+pandas
+rouge_score
+Flask
+PyPDF2
+pyngrok
+# Depending on your PyTorch installation, you might need a specific version
+# e.g., torch torchvision torchaudio
+# Or if you have CUDA:
+# torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+# (Adjust cuXXX to your CUDA version)
