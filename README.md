@@ -1,2 +1,2 @@
 # NLP-based-Question-and-Answer-generation-System
-An NLP based Question and Answer Generation system created using transformers library and trained with custom datasets
+This project focuses on building a NLP-Based System for Generating Questions and Short Answers from PDFs that takes a user-inputted passage and automatically generates questions and corresponding answers based on the context. Unlike traditional rule-based systems, this project leverages deep learning techniques to achieve a more flexible and accurate understanding of language.
